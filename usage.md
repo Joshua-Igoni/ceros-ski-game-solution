@@ -23,7 +23,7 @@ aws_credentials_file = "/Users/malcolmreynolds/.aws/credentials"
 aws_profile = "serenity"
 
 // The region we'll create the repository in
-aws_region = "us-east-1"
+aws_region = "us-east-2"
 ```
 
 Once you've created your tfvars file, you can run `terraform init` to
@@ -68,12 +68,15 @@ Example `infrastructure/environments/terraform.tfvars`:
 ```
 aws_credentials_file = "/Users/malcolmreynolds/.aws/credentials"
 aws_profile = "serenity"
-aws_region = "us-east-1"
+aws_region = "us-east-2"
 repository_url = "<account #>.dkr.ecr.us-east-1.amazonaws.com/ceros-ski"
 public_key_path = "/Users/malcolmreynolds/.ssh/id_rsa.pub"
 ```
 
 Once you've initialized the infrastructure and created your .tfvars file, you
-can use `terraform apply` to create the ECS infrastructure.  Currently, the
-infrastructure is non-functional.  We leave it as an exercise for the reader to
-amend that.
+can use `terraform apply` to create the ECS infrastructure.
+
+After running `terraform apply` there will be an output on the screen which is the
+load balancer ip. copy and paste it in a browser you might see a "503 error", but wait for a minute or two then reload.
+
+the ski game is fully functional
