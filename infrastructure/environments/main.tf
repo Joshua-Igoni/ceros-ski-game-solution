@@ -122,15 +122,16 @@ resource "aws_route_table" "public_rt" {
     }
 }
 
+/**
+* Associate the public route table with the public subnets.
+*/
 resource "aws_route_table_association" "public" {
     count          = var.public_subnets_count
     subnet_id      = element(aws_subnet.public_subnets.*.id, count.index)
     route_table_id = aws_route_table.public_rt.id
 }
 
-/**
-* Associate the public route table with the public subnet.
-*/
+
 
 
 /******************************************************************************
@@ -187,16 +188,15 @@ resource "aws_route_table" "private_rt" {
  }
 }
 
+/**
+* Associate the private route table with the private subnet.
+*/
 resource "aws_route_table_association" "private" {
     count          = var.private_subnets_count
     subnet_id      = element(aws_subnet.private_subnets.*.id, count.index)
     route_table_id = aws_route_table.private_rt.id
 }
 
-
-/**
-* Associate the private route table with the private subnet.
-*/
 
 /******************************************************************************
 * Bastion Host
@@ -521,15 +521,6 @@ EOF
 }
 
 /**
-* This role is automatically created by ECS the first time we try to use an ECS
-* Cluster.  By the time we attempt to use it, it should exist.  However, there
-* is a possible TECHDEBT race condition here.  I'm hoping terraform is smart
-* enough to handle this - but I don't know that for a fact. By the time I tried
-* to use it, it already existed.
-*/
-
-
-/**
 * Create the ECS Service that will wrap the task definition.  Used primarily to
 * define the connections to the load balancer and the placement strategies and
 * constraints on the tasks.
@@ -567,7 +558,9 @@ resource "aws_ecs_service" "backend" {
     Resource          = "modules.environment.aws_ecs_service.backend"
   }
 }
-
+/**
+*Load Balancer to be attached to the ECS cluster to distribute the load among instances
+*/
 resource "aws_lb" "default" {
   name            = "ecs-lb"
   subnets         = aws_subnet.public_subnets.*.id
